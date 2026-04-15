@@ -126,6 +126,22 @@ fun GameScreen(gameViewModel: GameViewModel = viewModel()) {
                 onPlayAgain = { gameViewModel.resetGame() }
             )
         }
+        OutlinedTextField(
+            value = gameViewModel.addWords,
+            onValueChange = { gameViewModel.updateAddWords(it) },
+            label = { Text("Tambah kata baru") },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { gameViewModel.saveNewWord() }
+        ) {
+            Text(
+                text = "Simpan",
+                fontSize = 16.sp
+            )
+        }
     }
 }
 

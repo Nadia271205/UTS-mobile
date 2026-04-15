@@ -19,23 +19,39 @@ package com.example.unscramble
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.Room
+import com.example.unscramble.data.AppDatabase
 import com.example.unscramble.ui.GameScreen
+import com.example.unscramble.ui.GameViewModel
 import com.example.unscramble.ui.theme.UnscrambleTheme
+import kotlin.jvm.java
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "word_db"
+        ).build()
+
         setContent {
             UnscrambleTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    GameScreen()
+                val viewModel: GameViewModel = viewModel(
+                    factory = object : ViewModelProvider.Factory {
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return GameViewModel(db.Dao()) as T
+                        }
+                    }
+                )
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    GameScreen(gameViewModel = viewModel)
                 }
             }
         }
