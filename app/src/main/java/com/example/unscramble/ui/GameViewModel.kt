@@ -16,6 +16,7 @@
 
 package com.example.unscramble.ui
 
+import android.R.id.input
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.io.DataInput
 
 /**
  * ViewModel containing the app data and methods to process the data
@@ -63,10 +65,7 @@ class GameViewModel : ViewModel() {
         userGuess = guessedWord
     }
 
-    /*
-     * Checks if the user's guess is correct.
-     * Increases the score accordingly.
-     */
+
     fun checkUserGuess() {
         if (userGuess.equals(currentWord, ignoreCase = true)) {
             // User's guess is correct, increase the score
@@ -138,5 +137,12 @@ class GameViewModel : ViewModel() {
             usedWords.add(currentWord)
             shuffleCurrentWord(currentWord)
         }
+        fun userInputWord(input: String) (
+        _uiState.value = _uiState.value.copy(
+            userInputWord = input
+    }
+    fun addNewWord(){
+        val newWord = _uiState.value.userInputWord()
     }
 }
+
